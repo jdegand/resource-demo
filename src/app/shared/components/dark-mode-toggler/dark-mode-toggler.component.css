@@ -1,0 +1,108 @@
+.nav__right__toggler {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.nav__right__toggler::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -10%;
+    height: 50px;
+    width: 1px;
+    background: #fff;
+}
+
+.nav__right__toggler__moon {
+    width: 50px;
+    height: 50px;
+}
+
+.Toggle {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+    gap: 1ch;
+}
+
+.Toggle__display {
+    --offset: 0.25em;
+    --diameter: 1.8em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 60px;
+    height: 40px;
+    border: 0.1em solid rgb(0 0 0 / 0.2);
+    position: relative;
+    border-radius: 100vw;
+    background-color: var(--toggle-background);
+    transition: 250ms;
+    cursor: pointer;
+}
+
+.Toggle__display::before {
+    content: "";
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: 0.1 solid rgb(0 0 0 / 0.2);
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: var(--offset);
+    transform: translate(0, -50%);
+    background-color: #fff;
+    transition: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .Toggle__display {
+        transition-duration: 0ms;
+    }
+}
+
+.Toggle__input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.Toggle__input:focus+.Toggle__display {
+    outline: 1px solid blueviolet;
+    outline: 1px auto -webkit-focus-ring-color;
+}
+
+.Toggle__input:focus:not(:focus-visible)+.Toggle__display {
+    outline: 0;
+}
+
+.Toggle__input:checked+.Toggle__display {
+    background-color: var(--toggle-background);
+}
+
+.Toggle__input:checked+.Toggle__display::before {
+    transform: translate(100%, -50%);
+}
+
+.Toggle__icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    color: inherit;
+    fill: var(--link-color);
+    vertical-align: middle;
+}
+
+.Toggle__icon--moon {
+    color: #f8f8f8;
+}
+
+.Toggle__icon--sun {
+    color: #f8f8f8;
+}

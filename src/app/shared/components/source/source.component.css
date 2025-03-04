@@ -1,0 +1,21 @@
+.article__external__link {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+}
+
+.article__source {
+    display: flex;
+    flex-direction: column;
+    margin-block: 20px;
+}
+
+.article__source__row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.article__source__row__link {
+    color: var(--link-color);
+}

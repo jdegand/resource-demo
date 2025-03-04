@@ -1,0 +1,202 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+    --colors-primary: #757575;
+    --colors-background: white;
+    --option-background: #f8f8f8;
+    --playButtonPurple: #a463d6;
+    --playButtonBackground: #e9d0fa;
+    --darkPurple: #814b81;
+    --link-color: #0000ee;
+    --form-input-color: #6b6b6b;
+    --select-focus-outline: #050505;
+    --toggle-background: #757575;
+    --fill: #000;
+    --select-font-color: #757575;
+}
+
+body[data-theme="light"] {
+    --colors-primary: #757575;
+    --colors-background: white;
+    --option-background: #f8f8f8;
+    --playButtonPurple: #a463d6;
+    --playButtonBackground: #e9d0fa;
+    --darkPurple: #814b81;
+    --form-input-color: #6b6b6b;
+    /* #757575 too light */
+    --select-focus-outline: #050505;
+    --toggle-background: #757575;
+    --fill: #000;
+    --select-font-color: #757575;
+}
+
+body[data-theme="dark"] {
+    --colors-primary: #fff;
+    --colors-background: #050505;
+    --playButtonPurple: #a148d9;
+    --playButtonBackground: #321a49;
+    --darkPurple: #9e50e7;
+    --link-color: #f8f8f8;
+    --form-input-color: #6b6b6b;
+    --select-focus-outline: #fff;
+    --toggle-background: blueviolet;
+    --fill: #fff;
+    --select-font-color: #757575;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+    margin: 0;
+}
+
+html:focus-within {
+    scroll-behavior: smooth;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+body {
+    min-height: 100vh;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+    background: var(--colors-background);
+    color: var(--colors-primary);
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+    text-decoration-skip-ink: auto;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+select option {
+    background: var(--colors-background);
+}
+
+.serif {
+    font-family: serif;
+}
+
+.sans-serif {
+    font-family: sans-serif;
+}
+
+.monospace {
+    font-family: monospace;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.purple-text {
+    color: #af6feb;
+}
+
+svg {
+    color: var(--fill);
+}
+
+.app__error {
+    text-align: center;
+    color: red;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+form {
+    width: 80%;
+    margin: 30px auto;
+    display: flex;
+    align-items: center;
+}
+
+.form__input {
+    border-radius: 10px;
+    display: inline-block;
+    text-indent: 10px;
+    padding: 0 10px;
+    width: 100%;
+    height: 50px;
+    font-weight: 700;
+    background: #f4f4f4;
+    border: none;
+    outline-color: var(--darkPurple);
+    color: var(--form-input-color);
+}
+
+.form__button {
+    background: transparent;
+    border: none;
+    outline-color: transparent;
+    margin-left: -14%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.form__button svg {
+    width: 24px;
+    height: 24px;
+}
+
+@media (min-width: 1024px) {
+    form {
+        width: 95%;
+    }
+
+    .form__button {
+        margin-left: -8%;
+    }
+
+    .nav {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .app__wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    article {
+        padding: 0;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}

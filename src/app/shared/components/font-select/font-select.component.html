@@ -1,0 +1,21 @@
+<!--
+<div>
+    <label for="fontSelector">Choose a Font:</label>
+    <select id="fontSelector" (change)="onFontChange($event)">
+        <option value="Arial">Arial</option>
+        <option value="'Courier New', Courier, monospace">Courier New</option>
+        <option value="'Times New Roman', Times, serif">Times New Roman</option>
+        <option value="'Comic Sans MS', cursive, sans-serif">Comic Sans</option>
+    </select>
+</div>
+-->
+
+<form class="form-group" #fontForm="ngForm" (change)="fontChange(fontForm)">
+    <label class="sr-only" for="font">Choose a font</label>
+    <select id="font" class="nav__right__select" name="font" ngModel>
+        <option value="" disabled>Select Font</option>
+        @for (font of fonts; track font) {
+        <option [ngValue]="font">{{ font }}</option>
+        }
+    </select>
+</form>

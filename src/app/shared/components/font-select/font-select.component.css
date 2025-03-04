@@ -1,0 +1,8 @@
+.nav__right__select {
+    height: 30px;
+    background: transparent;
+    font-size: 20px;
+    border: none;
+    color: var(--colors-primary);
+    width: 100%;
+}

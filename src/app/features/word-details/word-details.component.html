@@ -1,0 +1,45 @@
+@if (wordResource.error()) {
+<div class="app__error">{{ wordResource.error() }}</div>
+}
+<div>
+    @for (
+    w of wordResource.value(); track w; let onlyFirstEntryWord = $first; let lastEntrySource = $last) {
+    <article>
+        @if (onlyFirstEntryWord) {
+        <section class="article__heading">
+            <div class="article__heading__left">
+                <h1 class="article-h1">{{ w.word }}</h1>
+                <h2>{{ w.phonetic }}</h2>
+            </div>
+            <div class="article__heading__right">
+                @for (
+                phonetic of findAudio(w.phonetics); track phonetic; let firstAudio = $first) {
+                <div>
+                    @if (firstAudio) {
+                    <div class="player-div">
+                        <app-player audioSrc="{{ phonetic.audio }}"></app-player>
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+        </section>
+        }
+        @for (meaning of w.meanings; track meaning) {
+        <section class="article__word__props">
+            <app-meaning [meaning]="meaning"></app-meaning>
+        </section>
+        }
+        @if (lastEntrySource) {
+        <section class="article__source">
+            <h4>Source</h4>
+            @for (el of w.sourceUrls; track el) {
+            <div>
+                <app-source [source]="el"></app-source>
+            </div>
+            }
+        </section>
+        }
+    </article>
+    }
+</div>

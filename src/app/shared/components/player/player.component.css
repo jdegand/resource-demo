@@ -1,0 +1,16 @@
+.player__button {
+    border: none;
+    outline-color: transparent;
+    border-radius: 50%;
+    background-color: var(--playButtonBackground);
+    width: 75px;
+    height: 75px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+
+svg {
+    width: 64px;
+    height: 64px;
+}

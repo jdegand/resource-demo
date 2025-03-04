@@ -1,0 +1,35 @@
+.nav {
+    display: grid;
+    grid-template-columns: 75px 2fr;
+    align-items: center;
+    gap: 25px;
+    height: 80px;
+}
+
+.nav__left svg {
+    display: inline-block;
+    width: 50px;
+}
+
+.nav__right {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    /* changed column to fixed width to prevent layout shift */
+    align-items: center;
+    gap: 30px;
+}
+
+@media (min-width: 1024px) {
+    form {
+        width: 95%;
+    }
+
+    .form__button {
+        margin-left: -8%;
+    }
+
+    .nav {
+        display: flex;
+        justify-content: space-between;
+    }
+}

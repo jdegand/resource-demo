@@ -1,0 +1,30 @@
+svg {
+    width: 24px;
+    height: 24px;
+}
+
+article {
+    padding: 0 10px;
+}
+
+.article__heading {
+    display: flex;
+    gap: 40%;
+    align-items: center;
+    margin: 30px;
+}
+
+.article__source {
+    display: flex;
+    flex-direction: column;
+    margin-block: 20px;
+}
+
+.app__error {
+    text-align: center;
+    color: red;
+    font-size: 20px;
+    letter-spacing: 1px;
+    overflow-wrap: anywhere;
+    padding: 10px;
+}

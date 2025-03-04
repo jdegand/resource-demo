@@ -1,0 +1,17 @@
+<h2 class="meaning__partOf">{{ meaning().partOfSpeech }}</h2>
+<h3>Meaning</h3>
+<ul>
+    @for (def of meaning().definitions; track def) {
+    <li>{{ def.definition }}</li>
+    }
+</ul>
+@if (meaning().synonyms.length > 0) {
+<div>
+    <h4>Synonyms</h4>
+    @for (syn of meaning().synonyms; track syn) {
+    <span class="meaning__synonym">
+        {{ syn }}
+    </span>
+    }
+</div>
+}
