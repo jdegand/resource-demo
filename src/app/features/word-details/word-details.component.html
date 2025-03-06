@@ -1,6 +1,13 @@
 @if (wordResource.error()) {
 <div class="app__error">{{ wordResource.error() }}</div>
 }
+
+@if (wordResource.isLoading()) {
+    <div class="loader-container">
+        <div class="loader"></div>
+    </div>
+}
+
 <div>
     @for (
     w of wordResource.value(); track w; let onlyFirstEntryWord = $first; let lastEntrySource = $last) {
