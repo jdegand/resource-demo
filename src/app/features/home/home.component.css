@@ -1,0 +1,68 @@
+.app__error {
+    text-align: center;
+    color: red;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+form {
+    width: 80%;
+    margin: 30px auto;
+    display: flex;
+    align-items: center;
+}
+
+.form__input {
+    border-radius: 10px;
+    display: inline-block;
+    text-indent: 10px;
+    padding: 0 10px;
+    width: 100%;
+    height: 50px;
+    font-weight: 700;
+    background: #f4f4f4;
+    border: none;
+    outline-color: var(--darkPurple);
+    color: var(--form-input-color);
+}
+
+.form__button {
+    background: transparent;
+    border: none;
+    outline-color: transparent;
+    margin-left: -14%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.form__button svg {
+    width: 24px;
+    height: 24px;
+}
+
+@media (min-width: 1024px) {
+    form {
+        width: 95%;
+    }
+
+    .form__button {
+        margin-left: -8%;
+    }
+
+    .nav {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .app__wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    article {
+        padding: 0;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
