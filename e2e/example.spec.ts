@@ -1,14 +1,60 @@
-# Resource Demo
-
-This is reworked from my [Angular Dictionary 17 App](https://github.com/jdegand/angular-17-dictionary-app).  I replicated the project in a more modern and maintainable Angular style.
-
 import { expect, test } from '@playwright/test';
 
-test('Mock API request to /details/red route', async ({ page }) => {
+test('Dark Mode Toggler Test', async ({ page }) => {
+  await page.goto('http://localhost:4200');
 
-  // Intercept the API request
+  const toggleCheckbox = await page.locator('.nav__right__toggler').nth(0);
+
+  await toggleCheckbox.click();
+
+  const dataThemeDark = await page.evaluate(() => {
+    return document.body.getAttribute('data-theme');
+  });
+
+  expect(dataThemeDark).toBe('dark');
+
+  await toggleCheckbox.click();
+
+  const dataThemeLight = await page.evaluate(() => {
+    return document.body.getAttribute('data-theme');
+  });
+
+  expect(dataThemeLight).toBe('light');
+});
+
+test('should select a font from the dropdown', async ({ page }) => {
+  await page.goto('http://localhost:4200');
+
+  const fontDropdown = await page.locator('#font');
+
+  await expect(fontDropdown).toBeVisible();
+
+  await fontDropdown.selectOption('Monospace');
+
+  // Get the selected option's text
+  // the input might not be presenting clean values
+  // const selectedValue = await fontDropdown.inputValue();
+  // expect(selectedValue).toBe('Monospace'); // 3:Monospace
+  const selectedText = await fontDropdown.locator('option:checked').textContent();
+
+  expect(selectedText?.trim()).toBe('Monospace');
+
+  const bodyHasClass = await page.locator('body').evaluate((body) =>
+    body.classList.contains('monospace')
+  );
+
+  expect(bodyHasClass).toBe(true);
+});
+
+test('Input form interaction', async ({ page }) => {
+  await page.goto('http://localhost:4200');
+  await page.getByRole('textbox').fill('red');
+  await page.getByRole('button').click();
+  await expect(page).toHaveURL('http://localhost:4200/details/red');
+});
+
+test('Validate UI with mocked API response', async ({ page }) => {
   await page.route('**/details/red', (route) => {
-    // Mocked API response
     route.fulfill({
       status: 200,
       contentType: 'application/json',
@@ -181,26 +227,11 @@ test('Mock API request to /details/red route', async ({ page }) => {
     });
   });
 
-  // Navigate to the application
-  await page.goto('http://localhost:4200');
+  await page.goto('http://localhost:4200/details/red');
 
-  // Fill the input and trigger the request
-  await page.getByRole('textbox').fill('red');
-  await page.getByRole('button').click();
-
-  // Verify the API response is reflected in the UI
-  await expect(page).toHaveURL('http://localhost:4200/details/red'); // Ensure proper navigation
+  await expect(page.getByText('/ɹɛd/')).toBeVisible();
   await expect(page.getByText('sanguine')).toBeVisible();
-  await expect(
-    page.getByText('One of the 15 red balls used in snooker, distinguished from the colours.')
-  ).toBeVisible();
-  
-  // check the sourceUrl
-  const link = await page.locator('.article__source__row__link');
-  const href = await link.getAttribute('href');
-
-  expect(href).toBe('https://en.wiktionary.org/wiki/red');
-
-  await link.click();
-  await expect(page).toHaveURL('https://en.wiktionary.org/wiki/red');
+  await expect(page.getByText('The drug secobarbital; a capsule of this drug.')).toBeVisible();
+  await expect(page.getByText('(of a card) Of the hearts or diamonds suits. Compare black')).toBeVisible();
+  await expect(page.getByText('https://en.wiktionary.org/wiki/red')).toBeVisible();
 });

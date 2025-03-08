@@ -42,3 +42,8 @@ testem.log
 Thumbs.db
 
 .early.coverage
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
