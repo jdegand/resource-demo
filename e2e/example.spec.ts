@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import {expect, test} from '@bgotink/playwright-coverage';
 
 test('Dark Mode Toggler Test', async ({ page }) => {
   await page.goto('http://localhost:4200', { waitUntil: "commit" });
