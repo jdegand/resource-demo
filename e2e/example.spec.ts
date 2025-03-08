@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 test('Dark Mode Toggler Test', async ({ page }) => {
-  await page.goto('http://localhost:4200');
+  await page.goto('http://localhost:4200', { waitUntil: "commit" });
 
   const toggleCheckbox = await page.locator('.nav__right__toggler').nth(0);
 
@@ -23,7 +23,7 @@ test('Dark Mode Toggler Test', async ({ page }) => {
 });
 
 test('should select a font from the dropdown', async ({ page }) => {
-  await page.goto('http://localhost:4200');
+  await page.goto('http://localhost:4200', { waitUntil: "commit" });
 
   const fontDropdown = await page.locator('#font');
 
@@ -47,7 +47,7 @@ test('should select a font from the dropdown', async ({ page }) => {
 });
 
 test('Input form interaction', async ({ page }) => {
-  await page.goto('http://localhost:4200');
+  await page.goto('http://localhost:4200', { waitUntil: "commit" });
   await page.getByRole('textbox').fill('red');
   await page.getByRole('button').click();
   await expect(page).toHaveURL('http://localhost:4200/details/red');
@@ -227,7 +227,7 @@ test('Validate UI with mocked API response', async ({ page }) => {
     });
   });
 
-  await page.goto('http://localhost:4200/details/red');
+  await page.goto('http://localhost:4200/details/red', { waitUntil: "commit" });
 
   await expect(page.getByText('/ɹɛd/')).toBeVisible();
   await expect(page.getByText('sanguine')).toBeVisible();
