@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class DarkModeTogglerComponent {
   handleChecked(event: Event): void {
     const target = event.target as HTMLInputElement; // Explicit type assertion
-    if (target && target.checked !== undefined) {
+    if (target?.checked !== undefined) {
       document.body.setAttribute('data-theme', target.checked ? 'dark' : 'light');
     } else {
       console.error('Event target is null or does not have the "checked" property.');

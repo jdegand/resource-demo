@@ -22,7 +22,7 @@ export class WordDetailsComponent {
     },
     loader: async ({ request, abortSignal }) => {
       // Check if request is undefined or if query is undefined
-      if (!request || !request.query) {
+      if (!request?.query) {
         return []; // Return an empty array if no query is provided
       }
 
