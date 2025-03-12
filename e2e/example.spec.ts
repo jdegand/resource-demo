@@ -314,6 +314,10 @@ test('should toggle aria-label text on play button click', async ({ page }) => {
   await appPlayer.click();
 
   await expect(ariaLabel).toHaveText('Pause');
+
+  await appPlayer.click();
+
+  await expect(ariaLabel).toHaveText('Play');
 });
 
 test('should toggle svgs on play button click', async ({ page }) => {

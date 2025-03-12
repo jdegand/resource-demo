@@ -1,11 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-font-select',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './font-select.component.html',
   styleUrls: ['./font-select.component.css'],
 })
