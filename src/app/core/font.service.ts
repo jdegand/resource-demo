@@ -10,8 +10,4 @@ export class FontService {
     this.fontFamily = font;
     document.body.style.fontFamily = font; // Apply font globally to the <body>
   }
-
-  getFont(): string {
-    return this.fontFamily;
-  }
 }
