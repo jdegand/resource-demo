@@ -100,18 +100,6 @@ select option {
     background: var(--colors-background);
 }
 
-.serif {
-    font-family: serif;
-}
-
-.sans-serif {
-    font-family: sans-serif;
-}
-
-.monospace {
-    font-family: monospace;
-}
-
 .sr-only {
     position: absolute;
     width: 1px;

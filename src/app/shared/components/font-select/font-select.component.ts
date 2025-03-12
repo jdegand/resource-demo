@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FontService } from '../../../core/font.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-font-select',
@@ -8,25 +8,14 @@ import { FormsModule, NgForm } from '@angular/forms';
   templateUrl: './font-select.component.html',
   styleUrls: ['./font-select.component.css'],
 })
-
 export class FontSelectComponent {
   fonts = ['Serif', 'Sans-Serif', 'Monospace'];
-  private document = inject(DOCUMENT);
 
-  fontChange(fontForm: NgForm) {
-    this.document.body.setAttribute('class', '');
+  private fontService = inject(FontService);
 
-    const font = fontForm.form.value.font;
-
+  fontChange(font: string): void {
     if (font) {
-      // set font value as class here
-      this.document.body.setAttribute(
-        'class',
-        font.toLowerCase()
-      );
-    } else {
-      console.warn('Font is undefined.');
-      // Handle undefined font case here, if needed
+      this.fontService.setFont(font);
     }
   }
 }

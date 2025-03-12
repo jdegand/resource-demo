@@ -1,9 +1,9 @@
-<form class="form-group" #fontForm="ngForm" (change)="fontChange(fontForm)">
+<form class="form-group" #fontForm="ngForm">
     <label class="sr-only" for="font">Choose a font</label>
-    <select id="font" class="nav__right__select" name="font" ngModel>
+    <select id="font" class="nav__right__select" name="font" ngModel (ngModelChange)="fontChange($event)">
         <option value="" disabled>Select Font</option>
         @for (font of fonts; track font) {
-        <option [ngValue]="font">{{ font }}</option>
+            <option [ngValue]="font">{{ font }}</option>
         }
     </select>
 </form>

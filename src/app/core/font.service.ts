@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class FontService {
-  private fontFamily: string = 'Arial'; // Default font
+  private fontFamily: string = ''; // leave empty so Select Font is displayed in template
 
   setFont(font: string): void {
     this.fontFamily = font;
@@ -15,4 +15,3 @@ export class FontService {
     return this.fontFamily;
   }
 }
-

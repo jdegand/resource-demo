@@ -22,7 +22,7 @@ test('Dark Mode Toggler Test', async ({ page }) => {
   expect(dataThemeLight).toBe('light');
 });
 
-test('should select a font from the dropdown', async ({ page }) => {
+test('should apply font family on dropdown selection', async ({ page }) => {
   await page.goto('/', { waitUntil: "commit" });
 
   const fontDropdown = await page.locator('#font');
@@ -31,19 +31,15 @@ test('should select a font from the dropdown', async ({ page }) => {
 
   await fontDropdown.selectOption('Monospace');
 
-  // Get the selected option's text
-  // the input might not be presenting clean values
-  // const selectedValue = await fontDropdown.inputValue();
-  // expect(selectedValue).toBe('Monospace'); // 3:Monospace
   const selectedText = await fontDropdown.locator('option:checked').textContent();
 
   expect(selectedText?.trim()).toBe('Monospace');
 
-  const bodyHasClass = await page.locator('body').evaluate((body) =>
-    body.classList.contains('monospace')
+  const fontFamily = await page.locator('body').evaluate((body) =>
+    window.getComputedStyle(body).fontFamily
   );
 
-  expect(bodyHasClass).toBe(true);
+  expect(fontFamily).toContain("monospace");
 });
 
 test('Input form interaction', async ({ page }) => {
