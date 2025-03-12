@@ -1,4 +1,4 @@
-import {expect, test} from '@bgotink/playwright-coverage';
+import { expect, test } from '@bgotink/playwright-coverage';
 
 test('Dark Mode Toggler Test', async ({ page }) => {
   await page.goto('http://localhost:4200', { waitUntil: "commit" });
@@ -234,4 +234,102 @@ test('Validate UI with mocked API response', async ({ page }) => {
   await expect(page.getByText('The drug secobarbital; a capsule of this drug.')).toBeVisible();
   await expect(page.getByText('(of a card) Of the hearts or diamonds suits. Compare black')).toBeVisible();
   await expect(page.getByText('https://en.wiktionary.org/wiki/red')).toBeVisible();
+});
+
+test('word not found', async ({ page }) => {
+
+  await page.route('**/details/atlasfsfsd', (route) => {
+    route.fulfill({
+      status: 404,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        error: "The requested resource was not found.",
+      }),
+    });
+  });
+
+  await page.goto('http://localhost:4200', { waitUntil: "commit" });
+
+  await page.locator('.form__input').fill('atlasfsfsd');
+  await page.locator('.form__button').click();
+  await expect(page).toHaveURL(
+    'http://localhost:4200/details/atlasfsfsd'
+  );
+  await expect(page.locator('.app__error')).toBeVisible();
+});
+
+test('search for atlas', async ({ page }) => {
+  await page.goto('http://localhost:4200', { waitUntil: "commit" });
+
+  await page.locator('.form__input').fill('atlas');
+  await page.locator('.form__button').click();
+  await expect(page).toHaveURL(
+    'http://localhost:4200/details/atlas'
+  );
+  await expect(page.locator('.article-h1')).toHaveText(/atlas/);
+  await expect(page.locator('.player-div')).not.toBeVisible();
+});
+
+test('word not found error disappears on correct next search', async ({
+  page,
+}) => {
+  await page.goto('http://localhost:4200', { waitUntil: "commit" });
+
+  await page.locator('.form__input').fill('atlasfsfsd');
+  await page.locator('.form__button').click();
+  await expect(page).toHaveURL(
+    'http://localhost:4200/details/atlasfsfsd'
+  );
+  await expect(page.locator('.app__error')).toBeVisible();
+  await page.locator('.form__input').clear();
+  await page.locator('.form__input').fill('greet');
+  await page.locator('.form__button').click();
+  await expect(page).toHaveURL(
+    'http://localhost:4200/details/greet'
+  );
+  await expect(page.locator('.article-h1')).toHaveText(/greet/);
+  await expect(page.locator('.player-div')).toBeVisible();
+  await expect(page.locator('.app__error')).not.toBeVisible();
+});
+
+test('should display play button initially', async ({ page }) => {
+  await page.goto('http://localhost:4200/details/red');
+
+  const appPlayer = await page.locator('app-player');
+  await expect(appPlayer).toBeVisible();
+
+  const ariaLabel = await page.getByTestId('player-status');
+  await expect(ariaLabel).toHaveText('Play');
+});
+
+test('should toggle aria-label text on play button click', async ({ page }) => {
+  await page.goto('http://localhost:4200/details/red');
+
+  const appPlayer = await page.locator('app-player');
+  await expect(appPlayer).toBeVisible();
+
+  const ariaLabel = await page.getByTestId('player-status');
+  await expect(ariaLabel).toHaveText('Play');
+
+  await appPlayer.click();
+
+  await expect(ariaLabel).toHaveText('Pause');
+});
+
+test('should toggle svgs on play button click', async ({ page }) => {
+  await page.goto('http://localhost:4200/details/red', { waitUntil: "commit" });
+
+  const appPlayer = await page.locator('app-player');
+  await expect(appPlayer).toBeVisible();
+
+  const pauseSvg = await page.getByTestId('pause-svg');
+  const playSvg = await page.getByTestId('play-svg');
+
+  await appPlayer.click();
+
+  await expect(pauseSvg).toBeVisible();
+
+  await page.waitForTimeout(1500); // Allow UI update
+
+  await expect(playSvg).toBeVisible();
 });
