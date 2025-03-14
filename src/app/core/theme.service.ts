@@ -13,7 +13,7 @@ export class ThemeService {
   }
 
   private setInitialTheme(): void {
-    const initialTheme = document.body.getAttribute(this.themeAttribute) || this.lightTheme;
+    const initialTheme = document.body.getAttribute(this.themeAttribute) ?? this.lightTheme;
     this.setTheme(initialTheme);
   }
 
