@@ -14,7 +14,7 @@ export class WordDetailsComponent {
   word = input.required<string>();
   private BASE_URL = 'https://api.dictionaryapi.dev/api/v2/entries/en/';
 
-  // Define a resource that depends on the word
+  // might not need the `undefined` checks since word is required.
   wordResource = resource<Word[], { query?: string } | undefined>({
     request: () => {
       const query = this.word();
@@ -40,10 +40,6 @@ export class WordDetailsComponent {
   });
 
   findAudio(parentList: Phonetic[]) {
-    if (!Array.isArray(parentList)) {
-      throw new Error("parentList should be an array");
-    }
-
     return parentList.filter(item => item?.audio);
   }
 

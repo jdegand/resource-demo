@@ -327,3 +327,19 @@ test('should toggle svgs on play button click', async ({ page }) => {
 
   await expect(playSvg).toBeVisible();
 });
+
+test("Playwright chrome recorder test with tweaks", async ({ page }) => {
+  await page.setViewportSize({
+    width: 640,
+    height: 729
+  })
+  await page.goto("/");
+  await page.locator("app-home > div > div input").click();
+  await page.locator("app-home > div > div input").fill("red");
+  await page.keyboard.press('Enter', { delay: 100 });
+  await page.locator("article:nth-of-type(1) svg").click();
+  await page.locator("span.Toggle__display").click();
+  await page.locator("#font").click();
+  await page.locator('#font').selectOption({ label: 'Sans-Serif' });
+  await page.locator("div.nav__left svg").click();
+});
