@@ -12,31 +12,19 @@ import { Phonetic, Word } from './word-details.model';
 })
 export class WordDetailsComponent {
   word = input.required<string>();
-  private BASE_URL = 'https://api.dictionaryapi.dev/api/v2/entries/en/';
+  private readonly BASE_URL = 'https://api.dictionaryapi.dev/api/v2/entries/en/';
 
-  // might not need the `undefined` checks since word is required.
-  wordResource = resource<Word[], { query?: string } | undefined>({
-    request: () => {
-      const query = this.word();
-      return query ? { query } : undefined; // Return undefined if there is no search term
-    },
-    loader: async ({ request, abortSignal }) => {
-      // Check if request is undefined or if query is undefined
-      if (!request?.query) {
-        return []; // Return an empty array if no query is provided
-      }
+  wordResource = resource({
+    request: () => ({ query: this.word() }),
+    loader: async ({ request, abortSignal }): Promise<Word[]> => {
+      const response = await fetch(`${this.BASE_URL}${request.query}`, { signal: abortSignal });
 
-      const response = await fetch(`${this.BASE_URL}${request.query}`, {
-        signal: abortSignal
-      });
-
-      // Handle response errors
       if (!response.ok) {
         throw new Error(`Could not fetch...`);
       }
 
       return await response.json();
-    }
+    },
   });
 
   findAudio(parentList: Phonetic[]) {
