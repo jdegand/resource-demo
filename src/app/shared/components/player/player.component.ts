@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ElementRef, input, signal, viewChild } from '@angular/core';
 
 @Component({
   selector: 'app-player',
@@ -6,58 +6,28 @@ import { Component, OnDestroy, OnInit, AfterViewInit, ChangeDetectionStrategy, C
   styleUrls: ['./player.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PlayerComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PlayerComponent {
   audioSrc = input.required<string>();
+  audioRef = viewChild.required<ElementRef<HTMLAudioElement>>('audioRef');
+  isPlaying = signal<boolean>(false);
 
-  playing = false;
+  // @Input() audioSrc!: string; 
+  // @ViewChild('audioRef') audioRef!: ElementRef<HTMLAudioElement>;
+  // isPlaying: boolean = false;
 
-  private audio?: HTMLAudioElement;
-  private endedListener?: () => void;
+  togglePlayPause(): void {
+    const audio = this.audioRef().nativeElement;
 
-  constructor(private cdr: ChangeDetectorRef) {}
-
-  ngOnInit(): void {
-    if (this.audioSrc) {
-      this.audio = new Audio(this.audioSrc());
+    if (audio.paused) {
+      audio.play();
+      this.isPlaying.set(true);
     } else {
-      this.audio = undefined;
+      audio.pause();
+      this.isPlaying.set(false);
     }
   }
 
-  isPlaying(): void {
-    if (!this.audio) {
-      return;
-    }
-
-    this.playing = !this.playing;
-    if (this.playing) {
-      this.audio.play();
-    } else {
-      this.audio.pause();
-    }
-  }
-
-  ngAfterViewInit(): void {
-    if (!this.audio) {
-      console.warn('Audio object is not initialized.');
-      return;
-    }
-
-    // Check if the event listener is already added
-    if (!this.endedListener) {
-      this.endedListener = () => {
-        this.playing = false;
-        this.cdr.detectChanges(); // Trigger change detection
-      };
-      this.audio.addEventListener('ended', this.endedListener);
-    } else {
-      console.log('Event listener already exists.');
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this.audio && this.endedListener) {
-      this.audio.removeEventListener('ended', this.endedListener);
-    }
+  onAudioEnded(): void {
+    this.isPlaying.set(false);
   }
 }
