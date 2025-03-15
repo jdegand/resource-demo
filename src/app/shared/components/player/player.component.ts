@@ -11,10 +11,6 @@ export class PlayerComponent {
   audioRef = viewChild.required<ElementRef<HTMLAudioElement>>('audioRef');
   isPlaying = signal<boolean>(false);
 
-  // @Input() audioSrc!: string; 
-  // @ViewChild('audioRef') audioRef!: ElementRef<HTMLAudioElement>;
-  // isPlaying: boolean = false;
-
   togglePlayPause(): void {
     const audio = this.audioRef().nativeElement;
 
