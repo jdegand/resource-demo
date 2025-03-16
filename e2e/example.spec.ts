@@ -282,50 +282,25 @@ test('word not found error disappears on correct next search', async ({
   await expect(page.locator('.app__error')).not.toBeVisible();
 });
 
-test('should display play button initially', async ({ page }) => {
-  await page.goto('/details/red');
-
-  const appPlayer = await page.locator('app-player');
-  await expect(appPlayer).toBeVisible();
-
-  const ariaLabel = await page.getByTestId('player-status');
-  await expect(ariaLabel).toHaveText('Play');
-});
-
-test('should toggle aria-label text on play button click', async ({ page }) => {
-  await page.goto('/details/red');
-
-  const appPlayer = await page.locator('app-player');
-  await expect(appPlayer).toBeVisible();
-
-  const ariaLabel = await page.getByTestId('player-status');
-  await expect(ariaLabel).toHaveText('Play');
-
-  await appPlayer.click();
-
-  await expect(ariaLabel).toHaveText('Pause');
-
-  await appPlayer.click();
-
-  await expect(ariaLabel).toHaveText('Play');
-});
-
-test('should toggle svgs on play button click', async ({ page }) => {
+test('should toggle play states', async ({ page }) => {
   await page.goto('/details/red', { waitUntil: "commit" });
 
   const appPlayer = await page.locator('app-player');
   await expect(appPlayer).toBeVisible();
 
-  const pauseSvg = await page.getByTestId('pause-svg');
-  const playSvg = await page.getByTestId('play-svg');
+  const audioStatus = await page.getByTestId('audio-status');
+
+  await appPlayer.click();
+  await appPlayer.click();
+
+  await expect(audioStatus).toHaveText("paused");
 
   await appPlayer.click();
 
-  await expect(pauseSvg).toBeVisible();
+  await expect(audioStatus).toHaveText("playing");
 
   await page.waitForTimeout(1500); // Allow UI update
-
-  await expect(playSvg).toBeVisible();
+  await expect(audioStatus).toHaveText("paused");
 });
 
 test("Playwright chrome recorder test with tweaks", async ({ page }) => {

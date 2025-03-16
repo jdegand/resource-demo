@@ -1,16 +1,10 @@
 <button data-testid="play-btn" class="player__button" (click)="togglePlayPause()">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <title>{{ isPlaying() ? "Pause" : "Play" }}</title>
-        @if(isPlaying()) {
-        <path data-testid="pause-svg" fill="#a463d6" d="M14,19H18V5H14M6,19H10V5H6V19Z" />
-        } @else {
-        <path data-testid="play-svg" fill="#a463d6" d="M8,5.14V19.14L19,12.14L8,5.14Z" />
-        }
+        <path fill="#a463d6" [attr.d]="currentShape()"></path>
     </svg>
-    <span data-testid="player-status" class="sr-only purple-text">
-        {{ isPlaying() ? "Pause" : "Play" }}
-    </span>
+    <span data-testid="audio-status" class="sr-only purple-text">{{ currentStatus() }}</span>
 </button>
+
 <audio #audioRef (ended)="onAudioEnded()">
     <source [src]="audioSrc()" type="audio/mp3" />
 </audio>
