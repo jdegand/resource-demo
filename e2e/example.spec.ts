@@ -1,51 +1,40 @@
-import { expect, test } from '@bgotink/playwright-coverage';
+import { expect, test as testWithCoverage } from '@bgotink/playwright-coverage';
+import { test as t } from './test';
+import { mergeTests } from '@playwright/test';
 
-test('Dark Mode Toggler Test', async ({ page }) => {
-  await page.goto('/', { waitUntil: "commit" });
+export const test = mergeTests(
+  testWithCoverage,
+  t,
+);
 
-  const toggleCheckbox = await page.locator('.nav__right__toggler').nth(0);
+test('Dark Mode Toggler Test', async ({ page, darkModeToggler }) => {
+  await page.goto('/', { waitUntil: 'commit' });
 
-  await toggleCheckbox.click();
-
-  const dataThemeDark = await page.evaluate(() => {
-    return document.body.getAttribute('data-theme');
-  });
-
+  await darkModeToggler.toggleDarkMode();
+  const dataThemeDark = await darkModeToggler.getTheme();
   expect(dataThemeDark).toBe('dark');
 
-  await toggleCheckbox.click();
-
-  const dataThemeLight = await page.evaluate(() => {
-    return document.body.getAttribute('data-theme');
-  });
-
+  await darkModeToggler.toggleDarkMode();
+  const dataThemeLight = await darkModeToggler.getTheme();
   expect(dataThemeLight).toBe('light');
 });
 
-test('should apply font family on dropdown selection', async ({ page }) => {
-  await page.goto('/', { waitUntil: "commit" });
+test('should apply dropdown selection', async ({ page, fontDropdown }) => {
+  await page.goto('/', { waitUntil: 'commit' });
 
-  const fontDropdown = await page.locator('#font');
+  await fontDropdown.selectFont('Monospace');
+  const selectedText = await fontDropdown.getSelectedFontText();
+  expect(selectedText).toBe('Monospace');
 
-  await expect(fontDropdown).toBeVisible();
-
-  await fontDropdown.selectOption('Monospace');
-
-  const selectedText = await fontDropdown.locator('option:checked').textContent();
-
-  expect(selectedText?.trim()).toBe('Monospace');
-
-  const fontFamily = await page.locator('body').evaluate((body) =>
-    window.getComputedStyle(body).fontFamily
-  );
-
-  expect(fontFamily).toContain("monospace");
+  const fontFamily = await fontDropdown.getFontFamily();
+  expect(fontFamily).toContain('monospace');
 });
 
-test('Input form interaction', async ({ page }) => {
-  await page.goto('/', { waitUntil: "commit" });
-  await page.getByRole('textbox').fill('red');
-  await page.getByRole('button').click();
+test('Input form interaction', async ({ page, searchForm }) => {
+  await page.goto('/', { waitUntil: 'commit' });
+
+  await searchForm.fillTextbox('red');
+  await searchForm.clickButton();
   await expect(page).toHaveURL('/details/red');
 });
 
@@ -232,7 +221,7 @@ test('Validate UI with mocked API response', async ({ page }) => {
   await expect(page.getByText('https://en.wiktionary.org/wiki/red')).toBeVisible();
 });
 
-test('word not found', async ({ page }) => {
+test('word not found', async ({ page, searchForm }) => {
 
   await page.route('**/details/atlasfsfsd', (route) => {
     route.fulfill({
@@ -246,19 +235,19 @@ test('word not found', async ({ page }) => {
 
   await page.goto('/', { waitUntil: "commit" });
 
-  await page.locator('.form__input').fill('atlasfsfsd');
-  await page.locator('.form__button').click();
+  await searchForm.fillTextbox('atlasfsfsd');
+  await searchForm.clickButton();
   await expect(page).toHaveURL(
     '/details/atlasfsfsd'
   );
   await expect(page.locator('.app__error')).toBeVisible();
 });
 
-test('search for atlas', async ({ page }) => {
+test('search for atlas', async ({ page, searchForm }) => {
   await page.goto('/', { waitUntil: "commit" });
 
-  await page.locator('.form__input').fill('atlas');
-  await page.locator('.form__button').click();
+  await searchForm.fillTextbox('atlas');
+  await searchForm.clickButton();
   await expect(page).toHaveURL('/details/atlas');
   await expect(page.locator('.article-h1')).toHaveText(/atlas/);
   await expect(page.locator('.player-div')).not.toBeVisible();
@@ -266,16 +255,17 @@ test('search for atlas', async ({ page }) => {
 
 test('word not found error disappears on correct next search', async ({
   page,
+  searchForm
 }) => {
   await page.goto('/', { waitUntil: "commit" });
 
-  await page.locator('.form__input').fill('atlasfsfsd');
-  await page.locator('.form__button').click();
+  await searchForm.fillTextbox('atlasfsfsd');
+  await searchForm.clickButton();
   await expect(page).toHaveURL('/details/atlasfsfsd');
   await expect(page.locator('.app__error')).toBeVisible();
-  await page.locator('.form__input').clear();
-  await page.locator('.form__input').fill('greet');
-  await page.locator('.form__button').click();
+  await searchForm.clearInput();
+  await searchForm.fillTextbox('greet');
+  await searchForm.clickButton();
   await expect(page).toHaveURL('/details/greet');
   await expect(page.locator('.article-h1')).toHaveText(/greet/);
   await expect(page.locator('.player-div')).toBeVisible();
@@ -301,20 +291,4 @@ test('should toggle play states', async ({ page }) => {
 
   await page.waitForTimeout(1500); // Allow UI update
   await expect(audioStatus).toHaveText("paused");
-});
-
-test("Playwright chrome recorder test with tweaks", async ({ page }) => {
-  await page.setViewportSize({
-    width: 640,
-    height: 729
-  })
-  await page.goto("/");
-  await page.locator("app-home > div > div input").click();
-  await page.locator("app-home > div > div input").fill("red");
-  await page.keyboard.press('Enter', { delay: 100 });
-  await page.locator("article:nth-of-type(1) svg").click();
-  await page.locator("span.Toggle__display").click();
-  await page.locator("#font").click();
-  await page.locator('#font').selectOption({ label: 'Sans-Serif' });
-  await page.locator("div.nav__left svg").click();
 });
