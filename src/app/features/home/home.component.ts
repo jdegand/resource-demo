@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
-import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterOutlet, FormsModule, NavbarComponent],
+  imports: [FormsModule, RouterOutlet],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })

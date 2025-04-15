@@ -1,6 +1,4 @@
-<div class="app__wrapper">
-    <app-navbar />
-
+<div>
     <div>
         <form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm)">
             <input class="form__input" aria-label="Search for a word" name="searchTerm" type="text"
@@ -16,6 +14,5 @@
         </form>
     </div>
 
-    <router-outlet></router-outlet>
-
+    <router-outlet />
 </div>
